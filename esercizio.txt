@@ -20,7 +20,7 @@ dell’esecuzione della query)
     FROM `ospiti`
     WHERE (DATE(CURDATE()) - DATE(`date_of_birth`)) >= 20
 
-
+--------------------------------------------------------------------------
 ● Seleziona tutti gli ospiti il cui nome inizia con la D
 
     SELECT *
@@ -37,17 +37,17 @@ dell’esecuzione della query)
 --------------------------------------------------------------------------
 ● Qual è il prezzo massimo pagato?
 
-SELECT MAX(`price`)
-FROM `pagamenti`
-WHERE `status` = 'accepted';
+    SELECT MAX(`price`)
+    FROM `pagamenti`
+    WHERE `status` = 'accepted';
 
 --------------------------------------------------------------------------
 ● Seleziona gli ospiti riconosciuti con patente e nati nel 1975
 
-SELECT *
-FROM `ospiti`
-WHERE `document_type` = 'driver license'
-AND YEAR(`date_of_birth`) = 1975;
+    SELECT *
+    FROM `ospiti`
+    WHERE `document_type` = 'driver license'
+    AND YEAR(`date_of_birth`) = 1975;
 
 --------------------------------------------------------------------------
 ● Quanti paganti sono anche ospiti?
