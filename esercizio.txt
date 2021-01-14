@@ -1,14 +1,14 @@
 ● Seleziona tutti gli ospiti che sono stati identificati con la carta di
 identità
 
-    SELECT*
+    SELECT* AS identificati_con_CI
     FROM `ospiti`
     WHERE document_type = 'CI'
 
 --------------------------------------------------------------------------
 ● Seleziona tutti gli ospiti che sono nati dopo il 1988
 
-    SELECT *
+    SELECT * AS nati_dopo_1988
     FROM `ospiti`
     WHERE YEAR(`date_of_birth`) > 1988
 
@@ -16,48 +16,87 @@ identità
 ● Seleziona tutti gli ospiti che hanno più di 20 anni (al momento
 dell’esecuzione della query)
 
-    SELECT *
+    SELECT * AS ospiti_meno_20_anni
     FROM `ospiti`
     WHERE TIMESTAMPDIFF(YEAR, `date_of_birth`, CURRENT_DATE) > 20;
+
+- Altra soluzione:
+
+    SELECT * AS ospiti_meno_20_anni
+    FROM `ospiti`
+    WHERE TIMESTAMPDIFF(YEAR, `date_of_birth`, NOW()) > 20;
 
 --------------------------------------------------------------------------
 ● Seleziona tutti gli ospiti il cui nome inizia con la D
 
-    SELECT *
+    SELECT * AS nome_inizia_con_D
     FROM `ospiti`
     WHERE `name` LIKE 'D%'
 
 --------------------------------------------------------------------------
 ● Calcola il totale degli ordini accepted
 
-    SELECT COUNT(*)
+    SELECT COUNT(*) AS 'totale'
+    FROM `pagamenti`
+    WHERE `status` = 'accepted';
+
+● Calcola il totale dei pagamenti degli ordini accepted
+
+    SELECT SUM(price) AS 'totale_pagamenti'
     FROM `pagamenti`
     WHERE `status` = 'accepted';
 
 --------------------------------------------------------------------------
 ● Qual è il prezzo massimo pagato?
 
-    SELECT MAX(`price`)
+    SELECT MAX(`price`) AS massimo_pagato
     FROM `pagamenti`
     WHERE `status` = 'accepted';
+
+- Altra soluzione:
+
+    SELECT `price` AS massimo_pagato
+    FROM `pagamenti`
+    WHERE `status` = 'accepted'
+    ORDER BY `price` DESC
+    LIMIT 1
 
 --------------------------------------------------------------------------
 ● Seleziona gli ospiti riconosciuti con patente e nati nel 1975
 
-    SELECT *
+    SELECT * AS nati_1975_con_patente
     FROM `ospiti`
     WHERE `document_type` = 'driver license'
     AND YEAR(`date_of_birth`) = 1975;
 
+- Altra soluzione:
+
+    SELECT * AS nati_1975_con_patente
+    FROM `ospiti`
+    WHERE `document_type` = 'driver license'
+    AND date_of_birth BETWEEN '1975-01-01' AND '1975-12-31';
+
 --------------------------------------------------------------------------
 ● Quanti paganti sono anche ospiti?
 
-    SELECT *
+    SELECT * AS ospiti_anche_paganti
     FROM `paganti`
     WHERE `ospite_id` <> 'null'
+
+● Quanti paganti sono anche ospiti(totale)?
+
+    SELECT COUNT(*) AS numero_ospiti_paganti
+    FROM `paganti`
+    WHERE `ospite_id` IS NOT NULL
+
+- Altra soluzione:
+
+    SELECT COUNT(DISTINCT(ospite_id)) AS numero_ospiti_paganti
+    FROM `paganti`
+    WHERE `ospite_id` IS NOT NULL
 
 --------------------------------------------------------------------------
 ● Quanti posti letto ha l’hotel in totale?
 
-    SELECT SUM(`beds`)
+    SELECT SUM(`beds`) AS totale_posti_letto
     FROM `stanze`
