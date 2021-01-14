@@ -1,0 +1,45 @@
+Group by
+● Conta gli ospiti raggruppandoli per anno di nascita
+
+    SELECT COUNT(*) AS `numero_di_ospiti`, YEAR(`date_of_birth`) AS `anno_di_nascita`
+    FROM `ospiti`
+    GROUP BY YEAR(`date_of_birth`)
+
+- Inverto ordine di visualizzazione anno di nascita ospiti, dal più giovane al più vecchio:
+
+    SELECT COUNT(*) AS `numero_di_ospiti`, YEAR(`date_of_birth`) AS `anno_di_nascita`
+    FROM `ospiti`
+    GROUP BY YEAR(`date_of_birth`) DESC
+
+--------------------------------------------------------------------------
+● Somma i prezzi dei pagamenti raggruppandoli per status
+
+    SELECT `status`, SUM(`price`) AS `somma_pagamenti_per_status`
+    FROM `pagamenti`
+    GROUP BY `status`
+
+--------------------------------------------------------------------------
+● Conta quante volte è stata prenotata ogni stanza
+
+    SELECT `stanze`.`room_number` AS `numero_stanza`, COUNT(`prenotazioni`.`stanza_id`) AS `prenotazioni_per_stanza`
+    FROM `stanze`
+    LEFT JOIN `prenotazioni`
+    ON `prenotazioni`.`stanza_id` = `stanze`.`id`
+    GROUP BY `stanze`.`room_number`
+
+--------------------------------------------------------------------------
+● Fai una analisi per vedere se ci sono ore in cui le prenotazioni sono
+più frequenti
+
+    SELECT HOUR(`created_at`) AS `orario_prenotazione`, COUNT(*) AS `numero_prenotazioni`
+    FROM `prenotazioni`
+    GROUP BY HOUR(`created_at`)
+    ORDER BY `numero_prenotazioni`
+
+--------------------------------------------------------------------------
+● Quante prenotazioni ha fatto l’ospite che ha fatto più prenotazioni?
+
+    SELECT `ospite_id` AS `id_ospite`, COUNT(*) AS `numero_prenotazioni`
+    FROM `prenotazioni_has_ospiti`
+    GROUP BY `ospite_id`
+    ORDER BY COUNT(*)
